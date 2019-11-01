@@ -6,6 +6,9 @@ import { Col, Row, Container, ButtonToolbar, Button} from 'react-bootstrap';
 import Spinner from 'react-bootstrap/Spinner'
 import styled from 'styled-components'
 import {URL_IMG, IMG_SIZE_LARGE, IMG_SIZE_MED  } from './helpers/const'
+import dateDropDown from './components/dateDropDown';
+import DateButton from './components/dateDropDown';
+import BookingModal from './components/BookingModal'
 
 
 const titleStyle = {
@@ -37,7 +40,8 @@ export default class Home extends Component{
             movies : "",
             showMovieList : true,
             showMovieInfo : false,
-            movieToShow : []
+            movieToShow : [],
+            showBookingModal : false
         };
         this.handleClick = this.handleClick.bind(this)
         this.fetchMovies = this.fetchMovies.bind(this);
@@ -59,29 +63,27 @@ handleClick(item){
     var movieToShow = []
     movieToShow.push(item);
     Object.assign(this.state, {movieToShow})
-    console.log(this.state)
-    console.log(this.state.movieToShow)
-    if(localStorage.user){
-        console.log(localStorage.user)
-    }
 
 }
 handleBackClick(){
     this.setState(prevState => ({ showMovieList: !prevState.showMovieList, showMovieInfo: !prevState.showMovieInfo }))
     Object.assign(this.state, {movieToShow : ""})
     console.log("back btn clicked")
-    console.log(this.state.movieToShow)
 }
-
+openBooking(){
+    this.setState({showBookingModal : true})
+}
     render(){
         if (!this.state.movies) {
             return <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>
         }
+        
         else{
         return(
             <Container>
+                
                 <Row>
                     {this.state.showMovieList && this.state.movies.map(
                         movie => (
@@ -99,7 +101,7 @@ handleBackClick(){
                                 <td>
                                     <dt>
                                     <StyledImg>
-                                        <Image   src={URL_IMG + IMG_SIZE_LARGE + movie.poster_path} onLoad={() => console.log(movie)} responsive></Image>
+                                        <Image   src={URL_IMG + IMG_SIZE_LARGE + movie.poster_path} responsive></Image>
                                     </StyledImg>
                                     </dt>
                                 </td>
@@ -129,12 +131,15 @@ handleBackClick(){
                                 </table>
                                 <table>
                                 <ButtonToolbar className="text-right">
-                                    <Button variant="primary" size="lg" active>
-                                        Book tickets
+                                    <Button variant="primary" size="lg" active onClick={() => this.openBooking()}>
+                                    <BookingModal movieTitle={movie.title} hidden={this.state.showBookingModal}/>
                                     </Button>
                                     <Button variant="secondary" size="lg" active onClick={() => this.handleBackClick()} >
                                         Back
                                     </Button>
+                                    <dateButton>
+                                        hej
+                                    </dateButton>
                                 </ButtonToolbar>
                                 </table>
                             </React.Fragment>
