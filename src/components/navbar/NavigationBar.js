@@ -46,8 +46,6 @@ export default class NavigationBar extends Component{
     }
     logOut = () => {
         userService.logout();
-        console.log(localStorage)
-        console.log(this.state.user);
     }
     componentDidMount() {
         var data = JSON.parse(localStorage.getItem('user'));
@@ -60,14 +58,12 @@ export default class NavigationBar extends Component{
             this.setState({
                 showLoginBtn : true
             })
-            console.log("ser")
         }
         else{
             Object.assign(this.state, {showLoginBtn : false})
             this.setState({
                 showLoginBtn : false
             })            
-            console.log("no user")
         }
         
         

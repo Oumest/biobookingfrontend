@@ -3,6 +3,7 @@ import {Button, Modal} from 'react-bootstrap';
 import LoginForm from './Forms/LoginForm';
 import {userService} from './services/userService';
 import RegistrationForm from './Forms/RegistrationForm';
+import { movieService } from './services/movieService';
 
 
 
@@ -14,11 +15,12 @@ export default class LoginModal extends Component{
         this.render.bind(this);
         this.state = {
           showModal: false,
-          showReg: false
+          showReg: false,
+          movies : {}
         };
         this.onChildClicked = this.onChildClicked.bind(this);
       }
-    onChildClicked(){
+    onChildClicked = () => {
         this.setState({showModal: false});
     }
 
@@ -30,7 +32,6 @@ export default class LoginModal extends Component{
         this.setState({ showModal: true });
       }
       reg = () => {
-        console.log("show reg")
         Object.assign(this.state, {showReg : true, showModal : false})
         this.setState({showReg : true});
     }

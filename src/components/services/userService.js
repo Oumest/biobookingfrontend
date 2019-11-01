@@ -1,5 +1,7 @@
 
 import { authHeader } from '../../helpers/authHeader';
+import { async } from 'q';
+import {BACKEND_LOG, BACKEND_REG, BACKEND_LINK} from '../../helpers/const'
 
 export const userService={
     login,
@@ -20,8 +22,8 @@ async function register(username, password, phoneNumber, email){
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: JSON.stringify(data)
     }
-    var response = await fetch(`http://localhost:50610/register`, requestOptions).then(handleResponse).then(login(username, password))
-    return response;/// still getting Enter a valid email error...
+    var response = await fetch(BACKEND_LINK + BACKEND_REG, requestOptions).then(handleResponse).then(login(username, password))
+    return response;
 }
 function login(username, password){
     const data = {
@@ -33,7 +35,7 @@ function login(username, password){
         headers: { 'Content-Type': 'application/json; charset=UTF-8' },
         body: JSON.stringify(data)
     };
-    return fetch(`http://localhost:50610/login`, requestOptions)
+    return fetch(BACKEND_LINK + BACKEND_LOG, requestOptions)
         .then(handleResponse)
         .then(user => {
             // login successful if there's a user in the response
@@ -62,11 +64,16 @@ async function getAll() {
         method: 'GET',
         headers: { 'Content-Type': 'application/json; charset=UTF-8'}
     };
-        var response = await fetch(`http://localhost:50610/api/useraccounts`);
+        var response = await fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`);
         var data = await response.json();
+        console.log(data.results)
+        for( var i = 0; i< data.results.length -1; i++){
+            console.log(data.results[i].original_title)
+        }
 
-    return fetch(`http://localhost:50610/api/useraccounts`).then(response=> console.log(response.json));
+    return fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`).then(response=> console.log(response.json));
 }
+
 
 function handleResponse(response) {
     const regResp = "There is already an account with that name!"

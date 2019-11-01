@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import { Home } from "./Home";
+import Home from "./Home";
 import { Register } from "./Register";
 import { Booking } from "./Booking";
 import { Movies } from "./Movies";
@@ -8,6 +8,7 @@ import { Profile } from "./Profile";
 import { NoMatch } from "./NoMatch";
 import {Layout} from "./components/Layout";
 import NavigationBar from "./components/navbar/NavigationBar";
+import {Poster} from './components/movies/components/Poster';
 
 
 class App extends Component{
@@ -35,11 +36,11 @@ closeModalHandler = () => {
       <React.Fragment>
         <NavigationBar />
         {
-          // add movie lists from moviedb
-
+          this.props.children
+          
         }
 
-        <Layout>
+          
          <Router>
            <Switch>
              <Route exact path="/" component={Home} />
@@ -50,7 +51,7 @@ closeModalHandler = () => {
              <Route component={NoMatch}/>
            </Switch>
          </Router>
-        </Layout>
+        
       </React.Fragment>
     );
   }
