@@ -115,6 +115,7 @@ export default class NavigationBar extends Component{
                         </Dropdown.Item>
                         </DropdownButton>
                         </ButtonGroup>
+                        
                     </Nav>
                 </Navbar.Collapse>
         </Navbar>
