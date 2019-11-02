@@ -22,9 +22,7 @@ async function getcurrentPop(){
 async function handleData(data) {
     var vals = await data.results
     data = vals
-    console.log(data)
     var movies = []; // make array
-    console.log("done")
     var movie = {
         "id" : "",
         "title" : "",

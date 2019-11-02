@@ -31,7 +31,7 @@ export default class BookingModal extends Component{
 render(){
     return(
         <div>
-                <span onClick={this.open.bind(this)}>Choose date</span>
+                <span onClick={this.open.bind(this)}>Book movie</span>
                 <Modal show={this.state.showModal} onHide={this.close.bind(this)}>
                     <Modal.Body>
                     <BookingForm movieTitle = {this.state.movie} onClicked={this.onChildClicked}/>
