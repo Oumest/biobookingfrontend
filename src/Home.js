@@ -118,11 +118,6 @@ openBooking(){
                                 <h4>
                                     Release date: {movie.release_date}
                                 </h4>
-                                
-                            
-
-                                    
- 
                                 </table>
 
                                 <table>
@@ -131,16 +126,14 @@ openBooking(){
                                 </table>
                                 <table>
                                 <ButtonToolbar className="text-right">
-                                    <Button variant="primary" size="lg" active onClick={() => this.openBooking()}>
+                                    <Button  variant="primary" size="lg" active onClick={() => this.openBooking()}>
                                     <BookingModal movieTitle={movie.title} hidden={this.state.showBookingModal}/>
                                     </Button>
                                     <Button variant="secondary" size="lg" active onClick={() => this.handleBackClick()} >
                                         Back
                                     </Button>
-                                    <dateButton>
-                                        hej
-                                    </dateButton>
                                 </ButtonToolbar>
+                                
                                 </table>
                             </React.Fragment>
                             

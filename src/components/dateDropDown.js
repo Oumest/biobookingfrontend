@@ -21,10 +21,9 @@ export default class DateButton extends Component{
       handleClickDate(item){
         Object.assign(this.state, {movieDate : item})
         this.sendData()
-        console.log(this.state)
       }
       sendData = () =>{
-          this.props.formCallback(this.state.movieDate)
+          this.props.dateCallback(this.state.movieDate)
       }
 
     render(){
