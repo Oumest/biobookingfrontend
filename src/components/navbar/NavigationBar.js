@@ -98,8 +98,6 @@ export default class NavigationBar extends Component{
                 <Navbar.Collapse>
                     <Nav className="navleft">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/movies">Movies</Nav.Link>
-                        <Nav.Link href="/booking">Booking</Nav.Link>
                     </Nav>
                     <Nav className="ml-auto" >
                         <Button hidden={this.state.showLoginBtn}>

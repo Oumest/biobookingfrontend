@@ -1,3 +1,4 @@
+import { BACKEND_LINK, BACKEND_BOOKING} from '../../helpers/const'
 
 export const bookingService={
     bookingWithoutAccount,
@@ -6,6 +7,7 @@ export const bookingService={
 };
 
 async function bookingWithoutAccount(email, bookingForDate, row, seatNumber, loungeId){
+    const URL = BACKEND_LINK + BACKEND_BOOKING
     const data = {
         "Email" : email,
         "BookingForDate" : bookingForDate,
@@ -18,7 +20,8 @@ async function bookingWithoutAccount(email, bookingForDate, row, seatNumber, lou
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: JSON.stringify(data)
     }
-    var response = await fetch(`http://localhost:50610/Bookings/CustomerBookings`, requestOptions).then(handleResponse)
+    console.log(data)
+    var response = await fetch(URL, requestOptions).then(handleResponse)
     return response;
 }
 
