@@ -38,6 +38,9 @@ export default class LoginModal extends Component{
     closeReg(){
       this.setState({showReg : false})
     }
+    onRegClose = () => {
+      this.setState({showReg : false, showModal : true})
+    }
 
 
       render() {
@@ -55,7 +58,7 @@ export default class LoginModal extends Component{
                 </Modal>
                 <Modal show={!this.state.showModal && this.state.showReg} onHide={this.closeReg.bind(this)}>
                 <Modal.Body>
-                    <RegistrationForm/>
+                    <RegistrationForm onClicked={this.onRegClose}/>
                     </Modal.Body>
                 </Modal>
               </div>

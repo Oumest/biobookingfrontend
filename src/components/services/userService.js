@@ -22,9 +22,11 @@ async function register(username, password, phoneNumber, email){
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: JSON.stringify(data)
     }
-    var response = await fetch(BACKEND_LINK + BACKEND_REG, requestOptions).then(handleResponse).then(login(username, password))
+    var response = await fetch(BACKEND_LINK + BACKEND_REG, requestOptions).then(handleReg).then(setTimeout(function(){login(username, password)}, 1000))
+    
     return response;
 }
+
 function login(username, password){
     const data = {
         "AccountName" : username,
@@ -49,7 +51,7 @@ function login(username, password){
 
             }
 
-            window.location.reload(true);
+            //window.location.reload(true);
             return user;
         });
 }
@@ -66,7 +68,7 @@ async function getAll() {
     };
         var response = await fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`);
         var data = await response.json();
-        console.log(data.results)
+
         for( var i = 0; i< data.results.length -1; i++){
             console.log(data.results[i].original_title)
         }
@@ -74,8 +76,21 @@ async function getAll() {
     return fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`).then(response=> console.log(response.json));
 }
 
+function handleReg(response){
+    return response.text().then(text => {
+        var data = text;
+        if (!response.ok){
+            console.log("user already exists")
+        }
+        else if(response.ok){
+            console.log("created successfully...")
+        }
+    });
+
+}
 
 function handleResponse(response) {
+    
     const regResp = "There is already an account with that name!"
     return response.text().then(text => {
         var data = text;
@@ -83,6 +98,7 @@ function handleResponse(response) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
                 logout();
+                console.log(response)
                 console.log("bad info");
                 window.location.reload(true);
             }

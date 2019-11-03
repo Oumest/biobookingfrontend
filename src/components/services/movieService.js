@@ -1,10 +1,12 @@
 
 import { authHeader } from '../../helpers/authHeader';
 import { async } from 'q';
-import{URL_LIST, API_KEY} from '../../helpers/const';
+import{URL_LIST, API_KEY, BACKEND_SHOWINGS, BACKEND_LINK, BACKEND_SEATS, BACKEND_BOOKING} from '../../helpers/const';
 
 export const movieService={
-    getcurrentPop
+    getcurrentPop,
+    getMoveShowings,
+    getEmptySeats
 };
 
 async function getcurrentPop(){
@@ -19,6 +21,52 @@ async function getcurrentPop(){
     return vals;
 
 }
+async function getMoveShowings(movieTitle){ // needs to get objects in structure of {[date: *date*, time:  *time*], [...],...}
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json; charset=UTF-8'},
+    }
+    var response = await fetch(BACKEND_LINK  + BACKEND_SHOWINGS + movieTitle, requestOptions);
+    var data = await response.json();
+    var vals = handleMovieDates(await data)
+
+    return vals;
+}
+async function getEmptySeats(dateAndLounge){
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=UTF-8'},
+        body: JSON.stringify(dateAndLounge)
+    }
+    var response = await fetch(BACKEND_LINK  + BACKEND_SEATS, requestOptions);
+    var data = await response.json();
+    var vals = []
+    for (var i = 0; i<data.Row.length; i++){
+        var seat;
+
+        seat = data.Row[i] + data.SeatNumber[i]
+
+        vals.push(seat)
+    }
+    return vals
+}
+
+async function handleMovieDates(data){
+    var vals = await data;
+    data = vals;
+    var dates = [];
+    
+    for(var i = 0; i < data.length; i++){
+        var fullDate = data[i].movieShowingTime;
+        var showingDate = {
+            "date" : fullDate.substring(0,10),
+            "time" : fullDate.substring(11,fullDate.length)
+        }
+        
+        dates.push(showingDate)
+    }
+    return dates
+}
 async function handleData(data) {
     var vals = await data.results
     data = vals
@@ -32,6 +80,7 @@ async function handleData(data) {
         "language" : "",
         "poster_path" : ""
     }
+
     for(var i = 0; i < data.length; i++){
         var movie = {
             "id" : "",
@@ -63,12 +112,10 @@ async function getAll() {
     };
         var response = await fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`);
         var data = await response.json();
-        console.log(data.results)
-        for( var i = 0; i< data.results.length -1; i++){
-            console.log(data.results[i].original_title)
-        }
+        
+        
 
-    return fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`).then(response=> console.log(response.json));
+    return fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`);
 }
 
 async function getNewPopMovies(){

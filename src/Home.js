@@ -58,6 +58,7 @@ async fetchMovies(){
     this.setState({movies})
 }
 handleClick(item){
+    
     this.setState(prevState => ({ showMovieList: !prevState.showMovieList, showMovieInfo: !prevState.showMovieInfo }))
     this.setState({showMovieList : false, showMovieInfo : true})
     var movieToShow = []
@@ -68,7 +69,7 @@ handleClick(item){
 handleBackClick(){
     this.setState(prevState => ({ showMovieList: !prevState.showMovieList, showMovieInfo: !prevState.showMovieInfo }))
     Object.assign(this.state, {movieToShow : ""})
-    console.log("back btn clicked")
+    
 }
 openBooking(){
     this.setState({showBookingModal : true})
