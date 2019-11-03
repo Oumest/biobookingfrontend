@@ -17,3 +17,6 @@ export const API_KEY_ALT = '&api_key=485fee96bd9bd1e10302361fd8fb10cc';
 export const BACKEND_LINK = 'http://localhost:50610/';
 export const BACKEND_REG = 'register';
 export const BACKEND_LOG = 'Login';
+export const BACKEND_SHOWINGS = 'api/movieshowings/'
+export const BACKEND_SEATS = 'GetAvailableSeats'
+export const BACKEND_BOOKING = 'Bookings/CustomerBookings'

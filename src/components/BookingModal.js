@@ -21,8 +21,7 @@ export default class BookingModal extends Component{
     }
     open(){
         this.setState({showModal : true});
-        console.log(this.props)
-        console.log(this.state)
+        
     }
     close(){
         this.setState({showModal : false});

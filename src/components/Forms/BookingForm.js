@@ -17,7 +17,7 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
             bookingForDate : "",
             rowNumber : "",
             seatNumber: "",
-            loungeId: "",
+            loungeId: "1",
             showSeatBtn : false,
         }
         this.handleClick = this.handleClick.bind(this)
@@ -40,6 +40,7 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
     }
     storeSeats = (childData) => {
         Object.assign(this.state,{rowNumber : childData[0], seatNumber : childData[1]})
+        console.log(this.state)
 
     }
     seatCallback = (childData) => {
@@ -48,10 +49,17 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
         console.log(this.state)
     }
 
+    createSeatBtn(date, title){
+        if(this.state.showSeatBtn){
+       return (
+       <div><SeatButton movieDate={date} movieTitle={title}  getSeat={this.seatCallback}/></div>)
+        }
+    }
     handleClick(e) {
         e.preventDefault();
+        console.log("booking..")
         if(!localStorage.user){
-            
+             console.log("booking... no acc")
         bookingService.bookingWithoutAccount(this.state.email, this.state.bookingForDate, this.state.rowNumber, this.state.seatNumber, this.state.loungeId);
         }
         else{
@@ -77,18 +85,15 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
                         </Form.Group>
                         <Form.Group  controlId="emailaddress" hidden={this.loggedIn()}>
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control onChange={e => data.email = e.target.value}/>
+                            <Form.Control onChange={e => this.state.email = e.target.value}/>
                             <Form.Text className="text-muted">            
                             </Form.Text>
                         </Form.Group> 
 
                         <DateButton movieTitle = {this.state.selectedMovieShowing} dateCallback = {this.dateCallback} ></DateButton>                    
-                             
-                        <Form.Group controlId="rowNumber" hidden={!this.state.showSeatBtn}>
-                            
-                            <SeatButton movieDate={this.state.bookingForDate} movieTitle={this.state.selectedMovieShowing}  getSeat={this.seatCallback}/>
-                            
-                            
+
+                        <Form.Group controlId="rowNumber" hidden={!this.state.showSeatBtn} value={this.state.showSeatBtn} >
+                            {this.createSeatBtn(this.state.bookingForDate, this.state.selectedMovieShowing)}
                         </Form.Group>
                         <Form.Group controlId="loungeId">
                             <Form.Label>

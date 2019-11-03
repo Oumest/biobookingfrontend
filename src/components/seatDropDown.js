@@ -1,26 +1,32 @@
 import React, {Component} from 'react';
 import {DropdownButton, ButtonGroup, Dropdown, Button} from 'react-bootstrap'
 import Spinner from 'react-bootstrap/Spinner'
+import {movieService} from '../components/services/movieService'
+
 
 export default class SeatButton extends Component{
     constructor(props) {
         super(props);
         this.render.bind(this)
         this.state = {
-            emptySeats: ["A1", "A2", "C3", "D4"], // put array of dates here - get a func to fetch all dates
+            emptySeats: "", // put array of dates here - get a func to fetch all dates
             curentRow: "",
             currentSeatNumber: "",
             movieDate :this.props.movieDate,
             movieTitle : this.props.movieTitle,
         };
         //this.handleClick = this.handleClick.bind(this)
-        //this.fetchMovies = this.fetchMovies.bind(this);
+        this.getSeats = this.getSeats.bind(this);
       }
-      async fetchSeats(movieName){
-        
-        console.log(movieName)
+      async getSeats(){
+          console.log("fetching seats...")
+        var dateAndLounge = {"BookingForDate" : this.state.movieDate, "LoungeId" : "1"}
+        var seats = await movieService.getEmptySeats(dateAndLounge)
+        Object.assign(this.state, {emptySeats : seats})
+        console.log(seats)
     }
       handleClickSeat(item){
+          this.getSeats();
           console.log("clicked seat: " + item + " for movie " + this.state.movieTitle)
           var seat = []
           var seatNum = item.substring(1, item.length)
@@ -35,7 +41,8 @@ export default class SeatButton extends Component{
       }
 
     render(){
-        if (!this.state.movieTitle) {
+        if (!this.state.movieTitle || !this.state.emptySeats) {
+            this.getSeats();
             return <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>

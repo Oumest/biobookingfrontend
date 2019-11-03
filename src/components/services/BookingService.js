@@ -40,6 +40,7 @@ async function bookinWithAccount(bookingForDate, row, seatNumber, loungeId){
 }
 
 function handleResponse(response) {
+    console.log(response)
     const seatTaken = "That seat is taken!"
     const failedBooking = "Could not make booking!"
     const bookingMade = "Booking completed!"
