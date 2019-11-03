@@ -114,6 +114,10 @@ function handleResponse(response) {
                 if(data === regResp){
                     console.log("already exists")
                 }
+                if(data.email){
+                    data = { authdata : "", "email" : data.email}
+                    return data
+                }
                 // handle user token here. Now response.text() returns nothing, thus handling with response code
                 data = {authdata : ""}
             }

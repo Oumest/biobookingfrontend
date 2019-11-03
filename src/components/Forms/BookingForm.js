@@ -57,9 +57,7 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
     }
     handleClick(e) {
         e.preventDefault();
-        console.log("booking..")
         if(!localStorage.user){
-             console.log("booking... no acc")
         bookingService.bookingWithoutAccount(this.state.email, this.state.bookingForDate, this.state.rowNumber, this.state.seatNumber, this.state.loungeId);
         }
         else{

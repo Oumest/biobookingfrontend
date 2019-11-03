@@ -22,11 +22,13 @@ async function getcurrentPop(){
 
 }
 async function getMoveShowings(movieTitle){ // needs to get objects in structure of {[date: *date*, time:  *time*], [...],...}
-    const requestOptions = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json; charset=UTF-8'},
+var data = {"MovieName" : movieTitle}    
+const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: JSON.stringify(data)
     }
-    var response = await fetch(BACKEND_LINK  + BACKEND_SHOWINGS + movieTitle, requestOptions);
+    var response = await fetch(BACKEND_LINK  + BACKEND_SHOWINGS, requestOptions);
     var data = await response.json();
     var vals = handleMovieDates(await data)
 

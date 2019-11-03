@@ -44,9 +44,7 @@ closeModalHandler = () => {
          <Router>
            <Switch>
              <Route exact path="/" component={Home} />
-             <Route path="/movies" component={Movies} />
              <Route path="/register" component={Register} />
-             <Route path="/booking" component={Booking} />
              <Route path="/profile" component={Profile} />
              <Route component={NoMatch}/>
            </Switch>
