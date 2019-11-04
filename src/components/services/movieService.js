@@ -21,15 +21,16 @@ async function getcurrentPop(){
     return vals;
 
 }
-async function getMoveShowings(movieTitle){ // needs to get objects in structure of {[date: *date*, time:  *time*], [...],...}
-var data = {"MovieName" : movieTitle}    
+async function getMoveShowings(movieTitle){ // needs to get objects in structure of {[date: *date*, time:  *time*], [...],...}  
+const info =  {"MovieName" : movieTitle}
 const requestOptions = {
         method: 'POST',
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
-        body: JSON.stringify(data)
+        body : JSON.stringify(info)
     }
     var response = await fetch(BACKEND_LINK  + BACKEND_SHOWINGS, requestOptions);
     var data = await response.json();
+    console.log(data)
     var vals = handleMovieDates(await data)
 
     return vals;
@@ -59,7 +60,7 @@ async function handleMovieDates(data){
     var dates = [];
     
     for(var i = 0; i < data.length; i++){
-        var fullDate = data[i].movieShowingTime;
+        var fullDate = data[i];
         var showingDate = {
             "date" : fullDate.substring(0,10),
             "time" : fullDate.substring(11,fullDate.length)
