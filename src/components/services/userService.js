@@ -42,16 +42,15 @@ function login(username, password){
         .then(user => {
             // login successful if there's a user in the response
             if (user) {
+                var token = user
                 // store user details and basic auth credentials in local storage 
                 // to keep user logged in between page refreshes
-                user.username = username;
-                user.password = password;
-                user.authdata = window.btoa(username + ':' + password);
+                var user = {"username" : username, "password" : password, "token" : user}
                 localStorage.setItem('user', JSON.stringify(user));
 
             }
 
-            //window.location.reload(true);
+            window.location.reload(true);
             return user;
         });
 }
@@ -92,6 +91,7 @@ function handleReg(response){
 function handleResponse(response) {
     
     const regResp = "There is already an account with that name!"
+    console.log(response)
     return response.text().then(text => {
         var data = text;
         if (!response.ok) {
@@ -114,12 +114,10 @@ function handleResponse(response) {
                 if(data === regResp){
                     console.log("already exists")
                 }
-                if(data.email){
-                    data = { authdata : "", "email" : data.email}
+                if(data){
                     return data
                 }
                 // handle user token here. Now response.text() returns nothing, thus handling with response code
-                data = {authdata : ""}
             }
         }
 

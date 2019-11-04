@@ -23,7 +23,6 @@ export default class SeatButton extends Component{
         var dateAndLounge = {"BookingForDate" : this.state.movieDate, "LoungeId" : "1"}
         var seats = await movieService.getEmptySeats(dateAndLounge)
         Object.assign(this.state, {emptySeats : seats})
-        console.log(seats)
     }
       handleClickSeat(item){
           this.getSeats();

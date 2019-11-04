@@ -15,7 +15,7 @@ export default class DateButton extends Component{
             isFetching: true
         };
         //this.handleClick = this.handleClick.bind(this)
-        this.fetchDates = this.fetchDates.bind(this);
+        //this.fetchDates = this.fetchDates.bind(this);
       }
       async fetchDates(){ // should get dates - check fetched formatting..
             var title = this.state.movieTitle
@@ -23,9 +23,6 @@ export default class DateButton extends Component{
           var Alldates = await movieService.getMoveShowings(title);
           var dates = [];
           dates = Alldates
-          
-
-          
           Object.assign(this.state, {AllDates : dates, isFetching : false})
           
     }
