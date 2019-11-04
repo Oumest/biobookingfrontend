@@ -67,6 +67,7 @@ export default class Home extends Component{
 async fetchMovies(){
     var movies = await movieService.getcurrentPop();
     this.setState({movies})
+
 }
 handleClick(item){
     this.setState(prevState => ({ showMovieList: !prevState.showMovieList, showMovieInfo: !prevState.showMovieInfo }))
