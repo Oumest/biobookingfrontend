@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Button } from 'react-bootstrap';
 import LoginModal from './../LoginModal';
 import { userService } from '../services/userService';
+import MovieShowingModal from './../MovieShowingModal'
 
 
 const Styles = styled.div`
@@ -28,7 +29,8 @@ export default class NavigationBar extends Component{
             isShowing: false,
             user: {username : ""},
             showLoginBtn : true,
-            showLogoutBtn : false
+            showLogoutBtn : false, 
+            isAdmin: false
 
             
         };
@@ -52,12 +54,14 @@ export default class NavigationBar extends Component{
         Object.assign(this.state, { user: data})
 
 
-
         if(this.state.user){
             Object.assign(this.state, {showLoginBtn : true})
             this.setState({
                 showLoginBtn : true
             })
+            if(data.username === "admin"){
+                Object.assign(this.state, {isAdmin : true})
+            }
         }
         else{
             Object.assign(this.state, {showLoginBtn : false})
@@ -98,6 +102,11 @@ export default class NavigationBar extends Component{
                 <Navbar.Collapse>
                     <Nav className="navleft">
                         <Nav.Link href="/">Home</Nav.Link>
+                    </Nav>
+                    <Nav className="navleft" hidden ={!this.state.isAdmin}>
+                        <Button hidden ={!this.state.isAdmin}>
+                        <MovieShowingModal/> 
+                        </Button>
                     </Nav>
                     <Nav className="ml-auto" >
                         <Button hidden={this.state.showLoginBtn}>
