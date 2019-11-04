@@ -10,10 +10,10 @@ export const movieService={
     addShowing
 };
 
-async function addShowing(date, title, lounge){ // if successfull logs user in after 2 sec delay
+async function addShowing(date, title, lounge){
     const data = {
         "MovieShowingTime" : date,
-        "MovieShowingTime" : title,
+        "MovieName" : title,
         "lounge" : lounge,
     }
     const requestOptions = {
@@ -22,7 +22,7 @@ async function addShowing(date, title, lounge){ // if successfull logs user in a
         body: JSON.stringify(data)
     }
     var response = await fetch(BACKEND_LINK + BACKEND_ADDSHOWING, requestOptions);
-    
+    console.log(response)
     return response;
 }
 

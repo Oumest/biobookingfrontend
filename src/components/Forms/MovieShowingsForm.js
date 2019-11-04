@@ -1,6 +1,8 @@
 import React, { Component, useState } from 'react';
 import {Button, Form, ButtonGroup, ButtonToolbar} from 'react-bootstrap';
 import {userService} from '../services/userService';
+import { movieService } from '../services/movieService';
+
 
 
 
@@ -18,7 +20,7 @@ export default class MovieShowingsForm extends Component{
       handleSubmit = () => {
           var MovieShowingTime = this.state.Date + "T" + this.state.Time + ":00"
           Object.assign(this.state, ({MovieShowingTime}))
-          console.log(this.state.MovieShowingTime, this.state.MovieName, this.state.LoungeId) // vars to send to backend
+          movieService.addShowing(this.state.MovieShowingTime, this.state.MovieName, this.state.LoungeId) // vars to send to backend
       }
 
     render(){
