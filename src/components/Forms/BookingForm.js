@@ -24,8 +24,6 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
     }
     dateCallback = (childData) => {
         Object.assign(this.state,{bookingForDate : childData});
-        console.log("date from dateDropdown fetched")
-        console.log(this.state)
         Object.assign(this.state, {showSeatBtn : true})
     }
     loggedIn(){
@@ -43,7 +41,6 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
 
     }
     seatCallback = (childData) => {
-        console.log("fetched seat data..." + childData)
         this.storeSeats(childData)
     }
 
@@ -59,7 +56,6 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
         bookingService.bookingWithoutAccount(this.state.email, this.state.bookingForDate, this.state.rowNumber, this.state.seatNumber, this.state.loungeId);
         }
         else{
-            Object.assign(this.state, {email : localStorage.user.email})
             bookingService.bookinWithAccount(this.state.bookingForDate, this.state.rowNumber, this.state.seatNumber, this.state.loungeId)
         }
       };

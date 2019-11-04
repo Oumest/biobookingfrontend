@@ -13,7 +13,7 @@ export default class RegistrationModal extends Component{
       }
     onChildClicked(){
         this.setState({showModal: false});
-        console.log(localStorage);
+
     }
 
       close() {
@@ -21,7 +21,6 @@ export default class RegistrationModal extends Component{
       }
     
       open() {
-        console.log(localStorage.user);
         
         this.setState({ showModal: true });
       }

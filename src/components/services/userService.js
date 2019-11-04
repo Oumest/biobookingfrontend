@@ -42,11 +42,15 @@ function login(username, password){
         .then(user => {
             // login successful if there's a user in the response
             if (user) {
+
                 var token = user
+
                 // store user details and basic auth credentials in local storage 
                 // to keep user logged in between page refreshes
                 var user = {"username" : username, "password" : password, "token" : user}
                 localStorage.setItem('user', JSON.stringify(user));
+                var user = JSON.parse(localStorage.getItem('user'));
+
 
             }
 
@@ -72,7 +76,7 @@ async function getAll() {
             console.log(data.results[i].original_title)
         }
 
-    return fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`).then(response=> console.log(response.json));
+    return fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`);
 }
 
 function handleReg(response){
@@ -89,16 +93,16 @@ function handleReg(response){
 }
 
 function handleResponse(response) {
-    
-    const regResp = "There is already an account with that name!"
     console.log(response)
+    const regResp = "There is already an account with that name!"
+
     return response.text().then(text => {
         var data = text;
         if (!response.ok) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
                 logout();
-                console.log(response)
+                
                 console.log("bad info");
                 window.location.reload(true);
             }
@@ -115,9 +119,9 @@ function handleResponse(response) {
                     console.log("already exists")
                 }
                 if(data){
+                    data = data.substring(1, data.length-1)
                     return data
                 }
-                // handle user token here. Now response.text() returns nothing, thus handling with response code
             }
         }
 
