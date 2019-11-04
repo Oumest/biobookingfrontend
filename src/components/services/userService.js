@@ -10,7 +10,7 @@ export const userService={
     getAll
 };
 
-async function register(username, password, phoneNumber, email){
+async function register(username, password, phoneNumber, email){ // if successfull logs user in after 2 sec delay
     const data = {
         "email" : email,
         "AccountName" : username,
@@ -22,7 +22,7 @@ async function register(username, password, phoneNumber, email){
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: JSON.stringify(data)
     }
-    var response = await fetch(BACKEND_LINK + BACKEND_REG, requestOptions).then(handleReg).then(setTimeout(function(){login(username, password)}, 1000))
+    var response = await fetch(BACKEND_LINK + BACKEND_REG, requestOptions).then(handleReg).then(setTimeout(function(){login(username, password)}, 2000))
     
     return response;
 }

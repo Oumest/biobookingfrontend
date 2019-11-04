@@ -9,7 +9,7 @@ export default class DateButton extends Component{
         super(props);
         this.render.bind(this)
         this.state = {
-            AllDates: "", // put array of dates here - get a func to fetch all dates
+            AllDates: this.props.allDates, // put array of dates here - get a func to fetch all dates
             movieDate :"",
             movieTitle : this.props.movieTitle,
             isFetching: true
@@ -17,13 +17,19 @@ export default class DateButton extends Component{
         //this.handleClick = this.handleClick.bind(this)
         //this.fetchDates = this.fetchDates.bind(this);
       }
+      async componentDidMount(){
+
+        
+    }
+
       async fetchDates(){ // should get dates - check fetched formatting..
             var title = this.state.movieTitle
           
           var Alldates = await movieService.getMoveShowings(title);
           var dates = [];
           dates = Alldates
-          Object.assign(this.state, {AllDates : dates, isFetching : false})
+          var AllDates = dates
+          Object.assign(this.state, {AllDates, isFetching : false})
           
     }
       handleClickDate(item){
@@ -36,29 +42,31 @@ export default class DateButton extends Component{
       isFetchDates(){
           return this.state.isFetching
       }
+      generateDateBtn = () =>{
+
+          return <DropdownButton as={ButtonGroup} title={"Choose date"} id="bg-nested-dropdown">
+          {this.state.AllDates && this.state.AllDates.map(
+                  item => (
+                      <Dropdown.Item onClick={() => this.handleClickDate(item)}>
+                          {item.date + " " + item.time}
+                      </Dropdown.Item>
+                  )
+              ) }
+              
+          </DropdownButton>
+
+      }
 
     render(){
-        if (this.isFetchDates()) {
-            this.fetchDates();
-            return <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        }
-        else{
+        
         return(
             <ButtonGroup>
-                <DropdownButton as={ButtonGroup} title={"Choose date"} id="bg-nested-dropdown">
-                {this.state.AllDates.map(
-                        item => (
-                            <Dropdown.Item onClick={() => this.handleClickDate(item)}>
-                                {item.date + " " + item.time}
-                            </Dropdown.Item>
-                        )
-                    ) }
+
+                {this.generateDateBtn()}
                     
-                </DropdownButton>
+
             </ButtonGroup>
         );
-    }
+    
 }
 }
