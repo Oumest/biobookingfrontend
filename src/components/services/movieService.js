@@ -1,13 +1,30 @@
 
 import { authHeader } from '../../helpers/authHeader';
 import { async } from 'q';
-import{URL_LIST, API_KEY, BACKEND_SHOWINGS, BACKEND_LINK, BACKEND_SEATS, BACKEND_BOOKING} from '../../helpers/const';
+import{URL_LIST, API_KEY, BACKEND_SHOWINGS, BACKEND_LINK, BACKEND_SEATS, BACKEND_BOOKING, BACKEND_ADDSHOWING} from '../../helpers/const';
 
 export const movieService={
     getcurrentPop,
     getMoveShowings,
-    getEmptySeats
+    getEmptySeats,
+    addShowing
 };
+
+async function addShowing(date, title, lounge){ // if successfull logs user in after 2 sec delay
+    const data = {
+        "MovieShowingTime" : date,
+        "MovieShowingTime" : title,
+        "lounge" : lounge,
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: JSON.stringify(data)
+    }
+    var response = await fetch(BACKEND_LINK + BACKEND_ADDSHOWING, requestOptions);
+    
+    return response;
+}
 
 async function getcurrentPop(){
     const requestOptions = {
@@ -30,7 +47,7 @@ const requestOptions = {
     }
     var response = await fetch(BACKEND_LINK  + BACKEND_SHOWINGS, requestOptions);
     var data = await response.json();
-    var vals = handleMovieDates(await data)
+    var vals = handleMovieDates(data)
 
     return vals;
 }
@@ -53,19 +70,24 @@ async function getEmptySeats(dateAndLounge){
     return vals
 }
 
-async function handleMovieDates(data){
-    var vals = await data;
+function handleMovieDates(data){
+    var vals = data;
     data = vals;
     var dates = [];
+    const err = "API calls quota exceeded! maximum admitted 1 per Second."
+    if(data !== err){
     for(var i = 0; i < data.length; i++){
+        
         var fullDate = data[i];
         var showingDate = {
             "date" : fullDate.substring(0,10),
             "time" : fullDate.substring(11,fullDate.length)
         }
-        
+
         dates.push(showingDate)
     }
+    return dates
+}
     return dates
 }
 async function handleData(data) {

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {DropdownButton, ButtonGroup, Dropdown, Button} from 'react-bootstrap'
 import Spinner from 'react-bootstrap/Spinner'
-import { movieService } from './services/movieService';
 
 
 export default class DateButton extends Component{
@@ -19,18 +18,7 @@ export default class DateButton extends Component{
       }
       async componentDidMount(){
 
-        
-    }
-
-      async fetchDates(){ // should get dates - check fetched formatting..
-            var title = this.state.movieTitle
-          
-          var Alldates = await movieService.getMoveShowings(title);
-          var dates = [];
-          dates = Alldates
-          var AllDates = dates
-          Object.assign(this.state, {AllDates, isFetching : false})
-          
+        console.log(this.state.AllDates)
     }
       handleClickDate(item){
         Object.assign(this.state, {movieDate : item.date + "T" + item.time})

@@ -20,3 +20,4 @@ export const BACKEND_LOG = 'Login';
 export const BACKEND_SHOWINGS = 'movieshowings'
 export const BACKEND_SEATS = 'GetAvailableSeats'
 export const BACKEND_BOOKING = 'Bookings/CustomerBookings'
+export const BACKEND_ADDSHOWING = 'addmovieshowing'
