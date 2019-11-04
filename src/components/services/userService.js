@@ -72,7 +72,7 @@ async function getAll() {
             console.log(data.results[i].original_title)
         }
 
-    return fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`).then(response=> console.log(response.json));
+    return fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`);
 }
 
 function handleReg(response){
@@ -98,7 +98,7 @@ function handleResponse(response) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
                 logout();
-                console.log(response)
+                
                 console.log("bad info");
                 window.location.reload(true);
             }

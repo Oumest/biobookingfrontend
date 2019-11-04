@@ -30,7 +30,6 @@ const requestOptions = {
     }
     var response = await fetch(BACKEND_LINK  + BACKEND_SHOWINGS, requestOptions);
     var data = await response.json();
-    console.log(data)
     var vals = handleMovieDates(await data)
 
     return vals;

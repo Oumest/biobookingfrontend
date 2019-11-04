@@ -20,7 +20,6 @@ async function bookingWithoutAccount(email, bookingForDate, row, seatNumber, lou
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: JSON.stringify(data)
     }
-    console.log(data)
     var response = await fetch(URL, requestOptions).then(handleResponse)
     return response;
 }
@@ -44,7 +43,6 @@ async function bookinWithAccount(bookingForDate, row, seatNumber, loungeId){
 }
 
 function handleResponse(response) {
-    console.log(response)
     const seatTaken = "That seat is taken!"
     const failedBooking = "Could not make booking!"
     const bookingMade = "Booking completed!"

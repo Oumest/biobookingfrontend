@@ -19,14 +19,12 @@ export default class SeatButton extends Component{
         this.getSeats = this.getSeats.bind(this);
       }
       async getSeats(){
-          console.log("fetching seats...")
         var dateAndLounge = {"BookingForDate" : this.state.movieDate, "LoungeId" : "1"}
         var seats = await movieService.getEmptySeats(dateAndLounge)
         Object.assign(this.state, {emptySeats : seats})
     }
       handleClickSeat(item){
           this.getSeats();
-          console.log("clicked seat: " + item + " for movie " + this.state.movieTitle)
           var seat = []
           var seatNum = item.substring(1, item.length)
           var row = item.substring(0,1)
@@ -35,7 +33,7 @@ export default class SeatButton extends Component{
       }
       sendData = (data) =>{
           var seat = data
-          console.log("sending seat data..." + seat)
+
           this.props.getSeat(seat)
       }
 
@@ -49,7 +47,7 @@ export default class SeatButton extends Component{
         else{
         return(
             <ButtonGroup>
-                <DropdownButton as={ButtonGroup} title={"Choose seat"} id="bg-nested-dropdown" onLoad={() => console.log("loaded seatbtn")}>
+                <DropdownButton as={ButtonGroup} title={"Choose seat"} id="bg-nested-dropdown">
                 {this.state.emptySeats.map(
                         item => (
                             <Dropdown.Item onClick={() => this.handleClickSeat(item)}>
