@@ -57,7 +57,6 @@ async function handleMovieDates(data){
     var vals = await data;
     data = vals;
     var dates = [];
-    
     for(var i = 0; i < data.length; i++){
         var fullDate = data[i];
         var showingDate = {

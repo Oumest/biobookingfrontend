@@ -25,9 +25,13 @@ async function bookingWithoutAccount(email, bookingForDate, row, seatNumber, lou
 }
 
 async function bookinWithAccount(bookingForDate, row, seatNumber, loungeId){
+    var user = JSON.parse(localStorage.getItem('user'));
+    var username = user.username
+    var token = user.token
+
     const data = {
-        "LoginToken" : localStorage.user.token,
-        "AccountName" : localStorage.user.email, // or user tokken? For that backend needs to send back user token on login
+        "LoginToken" : token,
+        "AccountName" : username,
         "BookingForDate" : bookingForDate,
         "RowNumber" : row,
         "SeatNumber" : seatNumber,
