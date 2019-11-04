@@ -6,7 +6,7 @@ import DateButton from '../dateDropDown';
 import SeatButton from '../seatDropDown';
 import Spinner from 'react-bootstrap/Spinner';
 import { movieService } from '../../components/services/movieService';
-import Alert from 'react-bootstrap/Alert'
+
 
 
 export default class BookingForm extends Component{ // ADD DropDown for lounge. Change so user stores email in localstorage
@@ -29,7 +29,11 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
         this.fetchDates = this.fetchDates.bind(this)
     }
     componentDidMount(){
+
+        if(this.state.selectedMovieShowing){
         this.fetchDates().then(() => {this.loading = false})
+        
+        }
     }
 
     async fetchDates(){

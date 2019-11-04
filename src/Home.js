@@ -75,7 +75,7 @@ handleClick(item){
     var movieToShow = []
     movieToShow.push(item);
     Object.assign(this.state, {movieToShow})
-    this.fetchDates();
+    //this.fetchDates();
 
 }
 handleBackClick(){
