@@ -4,7 +4,7 @@ import Home from "./Home";
 import { Register } from "./Register";
 import { Booking } from "./Booking";
 import { Movies } from "./Movies";
-import { Profile } from "./Profile";
+import Profile from "./Profile";
 import { NoMatch } from "./NoMatch";
 import {Layout} from "./components/Layout";
 import NavigationBar from "./components/navbar/NavigationBar";

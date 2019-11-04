@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import {URL_IMG, IMG_SIZE_LARGE, IMG_SIZE_MED  } from './helpers/const'
 import dateDropDown from './components/dateDropDown';
 import DateButton from './components/dateDropDown';
-import BookingModal from './components/BookingModal'
+import BookingModal from './components/BookingModal';
 
 
 const titleStyle = {
@@ -41,7 +41,8 @@ export default class Home extends Component{
             showMovieList : true,
             showMovieInfo : false,
             movieToShow : [],
-            showBookingModal : false
+            showBookingModal : false, 
+            AllDates: ""
         };
         this.handleClick = this.handleClick.bind(this)
         this.fetchMovies = this.fetchMovies.bind(this);
@@ -52,18 +53,28 @@ export default class Home extends Component{
       async componentDidMount(){
           this.fetchMovies();
       }
+      async fetchDates(){
+        var title = this.state.movieToShow[0].title
+      
+      var AllDates = await movieService.getMoveShowings(title);
+      //var dates = [];
+      //dates = Alldates
+      //var AllDates = dates
+      Object.assign(this.state, {AllDates, loading: false})
 
+      
+}
 async fetchMovies(){
     var movies = await movieService.getcurrentPop();
     this.setState({movies})
 }
 handleClick(item){
-    
     this.setState(prevState => ({ showMovieList: !prevState.showMovieList, showMovieInfo: !prevState.showMovieInfo }))
     this.setState({showMovieList : false, showMovieInfo : true})
     var movieToShow = []
     movieToShow.push(item);
     Object.assign(this.state, {movieToShow})
+    this.fetchDates();
 
 }
 handleBackClick(){
@@ -72,6 +83,7 @@ handleBackClick(){
     
 }
 openBooking(){
+    this.fetchDates();
     this.setState({showBookingModal : true})
 }
     render(){
@@ -128,7 +140,7 @@ openBooking(){
                                 <table>
                                 <ButtonToolbar className="text-right">
                                     <Button  variant="primary" size="lg" active onClick={() => this.openBooking()}>
-                                    <BookingModal movieTitle={movie.title} hidden={this.state.showBookingModal}/>
+                                    <BookingModal movieTitle={movie.title} AllDates={this.state.AllDates} hidden={this.state.showBookingModal}/>
                                     </Button>
                                     <Button variant="secondary" size="lg" active onClick={() => this.handleBackClick()} >
                                         Back
