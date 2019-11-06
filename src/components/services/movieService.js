@@ -71,7 +71,7 @@ async function addShowing(date, title, lounge){
     const data = {
         "MovieShowingTime" : date,
         "MovieName" : title,
-        "lounge" : lounge,
+        "loungeId" : lounge,
     }
     const requestOptions = {
         method: 'POST',
@@ -79,7 +79,6 @@ async function addShowing(date, title, lounge){
         body: JSON.stringify(data)
     }
     var response = await fetch(BACKEND_LINK + BACKEND_ADDSHOWING, requestOptions);
-
     return response;
 }
 
