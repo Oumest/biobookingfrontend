@@ -3,40 +3,47 @@ import {Button, Form, ButtonGroup, ButtonToolbar} from 'react-bootstrap';
 import {userService} from '../services/userService';
 import { movieService } from '../services/movieService';
 import MovieListButton from '../movieListDropDown'
-import LoungeListButton from '../loungeDropDown'
 
 
 
-
-export default class MovieShowingsForm extends Component{
+export default class RemoveMovieForm extends Component{
     constructor(props) {
         super(props);
-        this.render.bind(this)
+        //this.render.bind(this)
         this.state = {
             MovieName : "",
-            Date: "",
-            Time: "",
-            LoungeId: "",
             success : ""
         };
       }
       
-      handleSubmit = () => {
-          var MovieShowingTime = this.state.Date + "T" + this.state.Time + ":00"
-          Object.assign(this.state, ({MovieShowingTime}))
-          movieService.addShowing(this.state.MovieShowingTime, this.state.MovieName, this.state.LoungeId) // vars to send to backend
-          var success = this.state.MovieName + " added succesfully for " + this.state.Date + " " + this.state.Time + " in Lounge " + this.state.LoungeId;
-            this.setState({success})
+       handleSubmit = async() => {
+          var MovieName = this.state.MovieName;
+          var resp = await movieService.deleteMovie(MovieName)
+          setTimeout(() => {
+          }, 1500);
+          this.sendData(resp.status)
+
+          //movieService.addShowing(this.state.MovieShowingTime, this.state.MovieName, this.state.LoungeId) // vars to send to backend
       }
+      sendData = (responseStatus) =>{
+        if(responseStatus === 200){
+            var success = "Movie: " + this.state.MovieName + " removed succesfully";
+            this.setState({success})
+            //Object.assign(this.state, ({success})) Object.assign function does not re-render component
+        }
+        else{
+            var success = "Something went wrong. Error " + responseStatus 
+            this.setState({success})
+            //Object.assign(this.state, ({success})) Object.assign function does not re-render component
+        }
+      }
+      
       movieListCallback = (childData) => {
         Object.assign(this.state, {MovieName : childData})
     }
-    loungeListCallback = (childData) => {
-        Object.assign(this.state, {LoungeId : childData})
-        
-    }
 
     render(){
+
         var showSuccess = () =>{
             if(this.state.success){
             return <Form.Label>
@@ -49,24 +56,11 @@ export default class MovieShowingsForm extends Component{
             </Form.Label>
             }
         }
-        return( 
+        return(
                     <Form >
-
                         <Form.Group controlId="name">
                             <Form.Label>Movie Title:     </Form.Label>
                             <MovieListButton getMovieName={this.movieListCallback}/>
-                        </Form.Group>
-                        <Form.Group controlId="loungeid">
-                            <Form.Label>Choose lounge:     </Form.Label>
-                            <LoungeListButton movieName={this.state.MovieName} getLoungeId={this.loungeListCallback}/>
-                        </Form.Group>
-                        <Form.Group controlId="date">
-                            <Form.Label>Date</Form.Label>
-                            <Form.Control type="name" id="date" placeholder="Enter date Yyyy-Mm-Dd" onChange={p => this.state.Date= p.target.value} />
-                        </Form.Group>
-                        <Form.Group controlId="time">
-                            <Form.Label>Time</Form.Label>
-                            <Form.Control type="name" id="Time" placeholder="Time Hh:Mm" onChange={p => this.state.Time = p.target.value} />
                         </Form.Group>
 
                         <Form.Group controlId="buttons">
@@ -77,12 +71,13 @@ export default class MovieShowingsForm extends Component{
                                     </Button>
                                 </ButtonGroup>
                                 <ButtonGroup >
-                                    <Button className="ml-2" variant="primary" type="button" onClick={this.props.onClicked}>Close</Button>
+                                    <Button className="ml-2" variant="primary" type="button" onClick={this.props.onClicked}>Back</Button>
                                 </ButtonGroup>
                             </ButtonToolbar>
                         </Form.Group>
                         <Form.Group>
-                            {this.state.success}
+                        {this.state.success}
+                            
                         </Form.Group>
                     </Form>      
         );

@@ -10,10 +10,12 @@ export default class SeatButton extends Component{
         this.render.bind(this)
         this.state = {
             emptySeats: "", // put array of dates here - get a func to fetch all dates
+            btnTitle: "Choose seat: ",
             curentRow: "",
             currentSeatNumber: "",
             movieDate :this.props.movieDate,
             movieTitle : this.props.movieTitle,
+            loading: true
         };
         //this.handleClick = this.handleClick.bind(this)
         this.getSeats = this.getSeats.bind(this);
@@ -21,7 +23,10 @@ export default class SeatButton extends Component{
       async getSeats(){
         var dateAndLounge = {"BookingForDate" : this.state.movieDate, "LoungeId" : "1"}
         var seats = await movieService.getEmptySeats(dateAndLounge)
-        Object.assign(this.state, {emptySeats : seats})
+
+        setTimeout(() => {
+            this.setState({emptySeats : seats, loading: false});
+          }, 1500);
     }
       handleClickSeat(item){
           this.getSeats();
@@ -29,6 +34,8 @@ export default class SeatButton extends Component{
           var seatNum = item.substring(1, item.length)
           var row = item.substring(0,1)
         seat.push(row, seatNum)
+        var btnTitle = seat
+        Object.assign(this.state, {btnTitle})
         this.sendData(seat)
       }
       sendData = (data) =>{
@@ -38,7 +45,7 @@ export default class SeatButton extends Component{
       }
 
     render(){
-        if (!this.state.movieTitle || !this.state.emptySeats) {
+        if (!this.state.movieTitle || !this.state.emptySeats || this.state.loading) {
             this.getSeats();
             return <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
@@ -47,7 +54,7 @@ export default class SeatButton extends Component{
         else{
         return(
             <ButtonGroup>
-                <DropdownButton as={ButtonGroup} title={"Choose seat"} id="bg-nested-dropdown">
+                <DropdownButton as={ButtonGroup} title={this.state.btnTitle} id="bg-nested-dropdown">
                 {this.state.emptySeats.map(
                         item => (
                             <Dropdown.Item onClick={() => this.handleClickSeat(item)}>
