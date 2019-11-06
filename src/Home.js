@@ -73,6 +73,7 @@ async fetchMovies(){
 handleClick(item){
     this.setState(prevState => ({ showMovieList: !prevState.showMovieList, showMovieInfo: !prevState.showMovieInfo }))
     this.setState({showMovieList : false, showMovieInfo : true})
+
     var movieToShow = []
     movieToShow.push(item);
     Object.assign(this.state, {movieToShow})

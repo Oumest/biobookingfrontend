@@ -24,6 +24,8 @@ export default class MovieShowingsForm extends Component{
       handleSubmit = () => {
           var MovieShowingTime = this.state.Date + "T" + this.state.Time + ":00"
           Object.assign(this.state, ({MovieShowingTime}))
+          this.setState({MovieShowingTime})
+
           movieService.addShowing(this.state.MovieShowingTime, this.state.MovieName, this.state.LoungeId) // vars to send to backend
           var success = this.state.MovieName + " added succesfully for " + this.state.Date + " " + this.state.Time + " in Lounge " + this.state.LoungeId;
             this.setState({success})
