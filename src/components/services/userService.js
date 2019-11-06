@@ -20,7 +20,11 @@ async function getUserInfo(username){
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: JSON.stringify(data)
     }
-    var response = await fetch(BACKEND_LINK + BACKEND_ACCOUNTINFO, requestOptions).then(handleUserInfo) // user data never reaches here
+    var response = await fetch(BACKEND_LINK + BACKEND_ACCOUNTINFO, requestOptions)
+    var val = await response.json();
+    
+    response = handleUserInfo(val)
+
     return response;
 }
 
@@ -95,21 +99,17 @@ async function getAll() {
 }
 
 function handleUserInfo(response){
-    response.text().then(text => {
-
-        var data = text;
+        var data = response;
         if(data){
-            var obj = JSON.parse(data)
             var user = {
-                "accountName" : obj.accountName,
-                "phoneNumber" : obj.phoneNumber
+                "accountName" : data.accountName,
+                "phoneNumber" : data.phoneNumber
             }
 
             data = user // user data is stored. 
             response = data
         }
             return response
-    })
 }
 
 function handleReg(response){
