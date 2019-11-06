@@ -78,7 +78,6 @@ export default class NavigationBar extends Component{
             isShowing: true,
             user : localStorage.getItem('user')
         });
-        console.log(this.state.user)
     }
     
     getUsername = () =>{

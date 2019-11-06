@@ -1,14 +1,28 @@
 
 import { authHeader } from '../../helpers/authHeader';
 import { async } from 'q';
-import {BACKEND_LOG, BACKEND_REG, BACKEND_LINK} from '../../helpers/const'
+import {BACKEND_LOG, BACKEND_REG, BACKEND_LINK, BACKEND_ACCOUNTINFO} from '../../helpers/const'
 
 export const userService={
     login,
     logout,
     register,
-    getAll
+    getAll,
+    getUserInfo
 };
+
+async function getUserInfo(username){
+    const data = {
+        "accountName" : username
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: JSON.stringify(data)
+    }
+    var response = await fetch(BACKEND_LINK + BACKEND_ACCOUNTINFO, requestOptions).then(handleUserInfo) // user data never reaches here
+    return response;
+}
 
 async function register(username, password, phoneNumber, email){ // if successfull logs user in after 2 sec delay
     const data = {
@@ -23,6 +37,7 @@ async function register(username, password, phoneNumber, email){ // if successfu
         body: JSON.stringify(data)
     }
     var response = await fetch(BACKEND_LINK + BACKEND_REG, requestOptions).then(handleReg).then(setTimeout(function(){login(username, password)}, 2000))
+    
     
     return response;
 }
@@ -77,6 +92,24 @@ async function getAll() {
         }
 
     return fetch(`https://api.themoviedb.org/3/discover/movie?primary_release_date.gte=2019-07-15&primary_release_date.lte=2019-10-31&api_key=485fee96bd9bd1e10302361fd8fb10cc`);
+}
+
+function handleUserInfo(response){
+    response.text().then(text => {
+
+        var data = text;
+        if(data){
+            var obj = JSON.parse(data)
+            var user = {
+                "accountName" : obj.accountName,
+                "phoneNumber" : obj.phoneNumber
+            }
+
+            data = user // user data is stored. 
+            response = data
+        }
+            return response
+    })
 }
 
 function handleReg(response){
