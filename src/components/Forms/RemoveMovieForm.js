@@ -28,30 +28,34 @@ export default class RemoveMovieForm extends Component{
       sendData = (responseStatus) =>{
         if(responseStatus === 200){
             var success = "Movie: " + this.state.MovieName + " removed succesfully";
-            Object.assign(this.state, ({success}))
+            this.setState({success})
+            //Object.assign(this.state, ({success})) Object.assign function does not re-render component
         }
         else{
             var success = "Something went wrong. Error " + responseStatus 
-            Object.assign(this.state, ({success}))
+            this.setState({success})
+            //Object.assign(this.state, ({success})) Object.assign function does not re-render component
         }
       }
-      showSuccess = () =>{
-          if(this.state.success){
-          return <Form.Label>
-              {this.state.success}
-          </Form.Label>
-          }
-          else{
-              return <Form.Label>
-              {this.state.success}
-          </Form.Label>
-          }
-      }
+      
       movieListCallback = (childData) => {
         Object.assign(this.state, {MovieName : childData})
     }
 
     render(){
+
+        var showSuccess = () =>{
+            if(this.state.success){
+            return <Form.Label>
+                {this.state.success}
+            </Form.Label>
+            }
+            else{
+                return <Form.Label>
+                {this.state.success}
+            </Form.Label>
+            }
+        }
         return(
                     <Form >
                         <Form.Group controlId="name">
@@ -72,7 +76,7 @@ export default class RemoveMovieForm extends Component{
                             </ButtonToolbar>
                         </Form.Group>
                         <Form.Group>
-                        {this.showSuccess()}
+                        {this.state.success}
                             
                         </Form.Group>
                     </Form>      

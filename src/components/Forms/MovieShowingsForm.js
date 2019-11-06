@@ -16,7 +16,8 @@ export default class MovieShowingsForm extends Component{
             MovieName : "",
             Date: "",
             Time: "",
-            LoungeId: ""
+            LoungeId: "",
+            success : ""
         };
       }
       
@@ -24,18 +25,31 @@ export default class MovieShowingsForm extends Component{
           var MovieShowingTime = this.state.Date + "T" + this.state.Time + ":00"
           Object.assign(this.state, ({MovieShowingTime}))
           movieService.addShowing(this.state.MovieShowingTime, this.state.MovieName, this.state.LoungeId) // vars to send to backend
+          var success = this.state.MovieName + " added succesfully for " + this.state.Date + " " + this.state.Time + " in Lounge " + this.state.LoungeId;
+            this.setState({success})
       }
       movieListCallback = (childData) => {
         Object.assign(this.state, {MovieName : childData})
     }
     loungeListCallback = (childData) => {
         Object.assign(this.state, {LoungeId : childData})
+        
     }
 
     render(){
-        return(
-
-                
+        var showSuccess = () =>{
+            if(this.state.success){
+            return <Form.Label>
+                {this.state.success}
+            </Form.Label>
+            }
+            else{
+                return <Form.Label>
+                {this.state.success}
+            </Form.Label>
+            }
+        }
+        return( 
                     <Form >
 
                         <Form.Group controlId="name">
@@ -48,7 +62,7 @@ export default class MovieShowingsForm extends Component{
                         </Form.Group>
                         <Form.Group controlId="date">
                             <Form.Label>Date</Form.Label>
-                            <Form.Control type="name" id="password" placeholder="Enter date Yyyy-Mm-Dd" onChange={p => this.state.Date= p.target.value} />
+                            <Form.Control type="name" id="date" placeholder="Enter date Yyyy-Mm-Dd" onChange={p => this.state.Date= p.target.value} />
                         </Form.Group>
                         <Form.Group controlId="time">
                             <Form.Label>Time</Form.Label>
@@ -66,6 +80,9 @@ export default class MovieShowingsForm extends Component{
                                     <Button className="ml-2" variant="primary" type="button" onClick={this.props.onClicked}>Close</Button>
                                 </ButtonGroup>
                             </ButtonToolbar>
+                        </Form.Group>
+                        <Form.Group>
+                            {this.state.success}
                         </Form.Group>
                     </Form>      
         );

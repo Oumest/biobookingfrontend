@@ -9,7 +9,7 @@ export default class LoungeListButton extends Component{
         super(props);
         this.render.bind(this)
         this.state = {
-            allLounges: "", // put array of dates here - get a func to fetch all dates
+            allLounges: "",
             btnTitle: "Choose lounge: ",
             isLoading : true
 
@@ -30,7 +30,8 @@ export default class LoungeListButton extends Component{
     }
       handleClickLounge(item){
           var btnTitle = item
-          Object.assign(this.state, {btnTitle})
+          this.setState({btnTitle})
+          //Object.assign(this.state, {btnTitle})
         this.sendData(item)
       }
       sendData = (data) =>{

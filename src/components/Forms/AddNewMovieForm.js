@@ -12,7 +12,8 @@ export default class AddNewMovieForm extends Component{
         //this.render.bind(this)
         this.state = {
             MovieName : "",
-            success : ""
+            success : "",
+            test : ""
         };
       }
       
@@ -21,34 +22,35 @@ export default class AddNewMovieForm extends Component{
           var resp = await movieService.addMovie(MovieName)
           setTimeout(() => {
           }, 1500);
-          this.sendData(resp.status)
+          this.sendData(resp)
 
           //movieService.addShowing(this.state.MovieShowingTime, this.state.MovieName, this.state.LoungeId) // vars to send to backend
       }
-      sendData = (responseStatus) =>{
-        if(responseStatus === 200){
+      sendData = (response) =>{
+        if(response.status === 200){
             var success = "Movie: " + this.state.MovieName + " added succesfully";
-            Object.assign(this.state, ({success}))
+            this.setState({success})
         }
         else{
-            var success = "Something went wrong. Error " + responseStatus 
-            Object.assign(this.state, ({success}))
+            var success = "Something went wrong. Error " + response.status 
+            this.setState({success})
         }
       }
-      showSuccess = () =>{ // DOES NOT WORK. LABEL STAYS INVISIBLE 
-          if(this.state.success){
-          return <Form.Label>
-              {this.state.success}
-          </Form.Label>
-          }
-          else{
-              return <Form.Label>
-              {this.state.success}
-          </Form.Label>
-          }
-      }
+
 
     render(){
+        var showSuccess = () =>{ 
+            if(this.state.success){
+            return <Form.Label>
+                {this.state.success}
+            </Form.Label>
+            }
+            else{
+                return <Form.Label>
+                {this.state.success}
+            </Form.Label>
+            }
+        }
         return(
                     <Form >
                         <Form.Group controlId="name">
@@ -69,7 +71,7 @@ export default class AddNewMovieForm extends Component{
                             </ButtonToolbar>
                         </Form.Group>
                         <Form.Group>
-                        {this.showSuccess()}
+                        {this.state.success}
                             
                         </Form.Group>
                     </Form>      

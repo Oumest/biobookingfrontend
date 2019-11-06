@@ -31,7 +31,8 @@ export default class MovieListButton extends Component{
     }
       handleClickMovie(item){
         var btnTitle = item
-        Object.assign(this.state, {btnTitle})
+        this.setState({btnTitle})
+        //Object.assign(this.state, {btnTitle})
       this.sendData(item)
       }
       sendData = (data) =>{
