@@ -6,22 +6,39 @@ import { movieService } from '../services/movieService';
 
 
 
-export default class AddNewMovieForm extends Component{
+export default class ProfileForm extends Component{
     constructor(props) {
         super(props);
         //this.render.bind(this)
         this.state = {
-            MovieName : "",
-            success : ""
+            username : "",
+            newUsername :"",
+            password : "",
+            newPassword : "",
+            email : "",
+            newEmail :"",
+            phoneNumber : "",
+            newPhoneNumber : ""
         };
       }
-      
+      componentDidMount(){
+        this.getUsername();
+
+    }
+    getUsername = () =>{
+    var user = JSON.parse(localStorage.getItem('user'));
+    var name = user.username
+    this.setState({username : name, isLoggedIn: true})
+    }
+
        handleSubmit = async() => {
-          var MovieName = this.state.MovieName;
-          var resp = await movieService.addMovie(MovieName)
-          setTimeout(() => {
-          }, 1500);
-          this.sendData(resp)
+           console.log("submit clicked")
+           var data = await userService.getUserInfo(this.state.username);
+         // var MovieName = this.state.MovieName;
+          //var resp = await movieService.addMovie(MovieName)
+          //setTimeout(() => {
+          //}, 1500);
+          //this.sendData(resp)
 
           //movieService.addShowing(this.state.MovieShowingTime, this.state.MovieName, this.state.LoungeId) // vars to send to backend
       }
@@ -53,10 +70,24 @@ export default class AddNewMovieForm extends Component{
         return(
                     <Form >
                         <Form.Group controlId="name">
-                            <Form.Label>Movie Title:     </Form.Label>
-                            <Form.Control type="name" id="password" placeholder="Enter movie title" onChange={p => this.state.MovieName= p.target.value} />
+                            <Form.Label>Username: {this.state.username}</Form.Label>
+                            <Form.Control type="name" id="username" placeholder="Enter new username" onChange={p => this.state.newUsername= p.target.value} />
                         </Form.Group>
 
+                        <Form.Group controlId="password">
+                            <Form.Label>password: {this.state.password}</Form.Label>
+                            <Form.Control type="name" id="password" placeholder="Enter new password" onChange={p => this.state.newPassword= p.target.value} />
+                        </Form.Group>
+
+                        <Form.Group controlId="email">
+                            <Form.Label>Email: {this.state.email}</Form.Label>
+                            <Form.Control type="name" id="email" placeholder="Enter new email" onChange={p => this.state.newEmail= p.target.value} />
+                        </Form.Group>
+
+                        <Form.Group controlId="phoneNumber">
+                            <Form.Label>Phone Number: {this.state.phoneNumber}</Form.Label>
+                            <Form.Control type="name" id="username" placeholder="Enter new phone number" onChange={p => this.state.newPhoneNumber= p.target.value} />
+                        </Form.Group>
                         <Form.Group controlId="buttons">
                             <ButtonToolbar>
                                 <ButtonGroup className="mr-2">
@@ -68,10 +99,6 @@ export default class AddNewMovieForm extends Component{
                                     <Button className="ml-2" variant="primary" type="button" onClick={this.props.onClicked}>Close</Button>
                                 </ButtonGroup>
                             </ButtonToolbar>
-                        </Form.Group>
-                        <Form.Group>
-                        {this.state.success}
-                            
                         </Form.Group>
                     </Form>      
         );

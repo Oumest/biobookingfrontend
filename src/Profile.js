@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import ProfileForm from './components/Forms/ProfileForm';
 
 export default class  Profile extends Component {
     constructor(props) {
@@ -13,30 +13,22 @@ export default class  Profile extends Component {
         this.getUsername = this.getUsername.bind(this)
     }
 
+    componentDidMount(){
+        this.getUsername();
+    }
     getUsername = () =>{
     var user = JSON.parse(localStorage.getItem('user'));
     var name = user.username
-    Object.assign(this.state, ({username : name, isLoggedIn: true}))
+    this.setState({username : name, isLoggedIn: true})
+    //Object.assign(this.state, ({username : name, isLoggedIn: true}))
 
 }
     render(){
         if(this.state.isLoggedIn){
-        this.getUsername()
     return(
     <div>
         <h1> Welcome {this.state.username}</h1>
-        <h2>
-            Hello world. This is my profile page
-        </h2>
-        <p>
-            probably textbox
-        </p>
-        <p>
-            maybe here
-        </p>
-        <p>
-            blah blah
-        </p>
+        <ProfileForm></ProfileForm>
     </div>
     )
 }
