@@ -1,7 +1,9 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, Fragment } from 'react';
 import {Button, Form, ButtonGroup, ButtonToolbar} from 'react-bootstrap';
 import {userService} from '../services/userService';
 import { movieService } from '../services/movieService';
+import MovieListButton from '../movieListDropDown'
+import LoungeListButton from '../loungeDropDown'
 
 
 
@@ -17,22 +19,32 @@ export default class MovieShowingsForm extends Component{
             LoungeId: ""
         };
       }
+      
       handleSubmit = () => {
           var MovieShowingTime = this.state.Date + "T" + this.state.Time + ":00"
           Object.assign(this.state, ({MovieShowingTime}))
           movieService.addShowing(this.state.MovieShowingTime, this.state.MovieName, this.state.LoungeId) // vars to send to backend
       }
+      movieListCallback = (childData) => {
+        Object.assign(this.state, {MovieName : childData})
+    }
+    loungeListCallback = (childData) => {
+        Object.assign(this.state, {LoungeId : childData})
+    }
 
     render(){
         return(
-                    <Form>
-                        <Form.Group controlId="username">
-                            <Form.Label>Movie Title</Form.Label>
-                            <Form.Control autoFocus type="name" id="MovieTitle" placeholder="Enter movie title" onChange={e => this.state.MovieName = e.target.value}/>
+
+                
+                    <Form >
+
+                        <Form.Group controlId="name">
+                            <Form.Label>Movie Title:     </Form.Label>
+                            <MovieListButton getMovieName={this.movieListCallback}/>
                         </Form.Group>
                         <Form.Group controlId="loungeid">
-                            <Form.Label>LoungeId</Form.Label>
-                            <Form.Control type="name" id="loungeId" placeholder="Enter lounge id" onChange={p => this.state.LoungeId= p.target.value} />
+                            <Form.Label>Choose lounge:     </Form.Label>
+                            <LoungeListButton movieName={this.state.MovieName} getLoungeId={this.loungeListCallback}/>
                         </Form.Group>
                         <Form.Group controlId="date">
                             <Form.Label>Date</Form.Label>
@@ -55,7 +67,7 @@ export default class MovieShowingsForm extends Component{
                                 </ButtonGroup>
                             </ButtonToolbar>
                         </Form.Group>
-                    </Form> 
+                    </Form>      
         );
     }
 

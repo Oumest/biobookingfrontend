@@ -6,6 +6,7 @@ import DateButton from '../dateDropDown';
 import SeatButton from '../seatDropDown';
 import Spinner from 'react-bootstrap/Spinner';
 import { movieService } from '../../components/services/movieService';
+import LoungeListButton from '../loungeDropDown'
 
 
 
@@ -23,7 +24,8 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
             loungeId: "1",
             showSeatBtn : false,
             loading: true,
-            booked : false
+            booked : false,
+            showLoungeBtn : false
         }
         this.handleClick = this.handleClick.bind(this)
         this.fetchDates = this.fetchDates.bind(this)
@@ -43,7 +45,9 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
       //var dates = [];
       //dates = Alldates
       //var AllDates = dates
-      Object.assign(this.state, {AllDates, loading: false})
+      setTimeout(() => {
+        this.setState({ AllDates, loading: false });
+      }, 1500);
 
       
 }
@@ -67,13 +71,25 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
     }
     seatCallback = (childData) => {
         this.storeSeats(childData)
+        Object.assign(this.state, {showLoungeBtn: true})
     }
-
+    
     createSeatBtn(date, title){
         if(this.state.showSeatBtn){
        return (
        <div><SeatButton movieDate={date} movieTitle={title}  getSeat={this.seatCallback}/></div>)
         }
+    }
+
+    createLoungeBtn(){
+        if(this.state.showLoungeBtn){
+            return(
+                <div><LoungeListButton getLoungeId={this.loungeListCallback}/></div>
+            )
+        }
+    }
+    loungeListCallback = (childData) => {
+        Object.assign(this.state, {loungeId : childData})
     }
     handleClick(e) {
         e.preventDefault();
@@ -126,17 +142,17 @@ export default class BookingForm extends Component{ // ADD DropDown for lounge. 
                             <Form.Text className="text-muted">            
                             </Form.Text>
                         </Form.Group> 
-
+                        <Form.Label>Date: </Form.Label>
                         <DateButton movieTitle = {this.state.selectedMovieShowing} allDates = {this.state.AllDates} dateCallback = {this.dateCallback} ></DateButton>                    
 
                         <Form.Group controlId="rowNumber" hidden={!this.state.showSeatBtn} value={this.state.showSeatBtn} >
+                        <Form.Label>Seat: </Form.Label>
                             {this.createSeatBtn(this.state.bookingForDate, this.state.selectedMovieShowing)}
                         </Form.Group>
                         <Form.Group controlId="loungeId">
-                            <Form.Label>
-                                Choose lounge
-                            </Form.Label>
-                            <Form.Control onChange={n => this.state.loungeId = n.target.value}/>                           
+                            <Form.Label>Lounge: </Form.Label>
+                            {this.createLoungeBtn()}
+                                                    
                         </Form.Group>                        
                         <Form.Group controlId="buttons">
                             <ButtonToolbar>

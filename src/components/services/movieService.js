@@ -1,14 +1,71 @@
 
 import { authHeader } from '../../helpers/authHeader';
 import { async } from 'q';
-import{URL_LIST, API_KEY, BACKEND_SHOWINGS, BACKEND_LINK, BACKEND_SEATS, BACKEND_BOOKING, BACKEND_ADDSHOWING} from '../../helpers/const';
+import{URL_LIST, API_KEY, BACKEND_SHOWINGS, BACKEND_LINK, BACKEND_SEATS, BACKEND_BOOKING, BACKEND_ADDSHOWING, BACKEND_GETMOVIES, BACKEND_GETLOUNGES, BACKEND_ADDMOVIE, BACKEND_REMOVEMOVIE} from '../../helpers/const';
 
 export const movieService={
     getcurrentPop,
     getMoveShowings,
     getEmptySeats,
-    addShowing
+    addShowing,
+    getAllMovies,
+    getAllLounges,
+    addMovie,
+    deleteMovie
 };
+
+async function deleteMovie(title){
+    const data = {
+        "movieName" : title
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: JSON.stringify(data)
+    }
+    var response = await fetch(BACKEND_LINK + BACKEND_REMOVEMOVIE, requestOptions);
+    return response;
+}
+
+async function addMovie(title){
+    const data = {
+        "movieName" : title
+    }
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json; charset=UTF-8'},
+        body: JSON.stringify(data)
+    }
+    var response = await fetch(BACKEND_LINK + BACKEND_ADDMOVIE, requestOptions);
+    return response;
+}
+
+async function getAllLounges(){
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+    }
+    var response = await fetch(BACKEND_LINK + BACKEND_GETLOUNGES, requestOptions);
+    var data = await response.json();
+    
+    var vals = handleBackendLounges(await data)
+
+    return vals;
+}
+
+
+async function getAllMovies(){
+    const requestOptions = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json; charset=UTF-8'}
+    }
+    var response = await fetch(BACKEND_LINK + BACKEND_GETMOVIES, requestOptions);
+    var data = await response.json();
+
+    var vals = handleBackendMovies(await data)
+
+    return vals;
+}
 
 async function addShowing(date, title, lounge){
     const data = {
@@ -22,7 +79,7 @@ async function addShowing(date, title, lounge){
         body: JSON.stringify(data)
     }
     var response = await fetch(BACKEND_LINK + BACKEND_ADDSHOWING, requestOptions);
-    console.log(response)
+
     return response;
 }
 
@@ -64,12 +121,42 @@ async function getEmptySeats(dateAndLounge){
         var seat;
 
         seat = data.Row[i] + data.SeatNumber[i]
-
         vals.push(seat)
     }
     return vals
 }
 
+async function handleBackendLounges(data){
+    var vals = await data
+    data = vals
+
+    var lounges = [];
+    for(var i = 0; i < data.length; i++){
+        var lounge = {
+            "loungeId" : ""
+        }
+        lounge.loungeId = data[i].loungeId
+
+        lounges.push(lounge)
+    }
+    return lounges;
+}
+async function handleBackendMovies(data){
+    var vals = await data
+    data = vals
+
+    var movies = [];
+    for(var i = 0; i < data.length; i++){
+        var movie = {
+            "movieName" : ""
+        }
+        movie.movieName = data[i].movieName
+        movies.push(movie)
+    }
+
+    return movies;
+
+}
 function handleMovieDates(data){
     var vals = data;
     data = vals;

@@ -9,6 +9,7 @@ export default class DateButton extends Component{
         this.render.bind(this)
         this.state = {
             AllDates: this.props.allDates, // put array of dates here - get a func to fetch all dates
+            btnTitle: "Choose date: ",
             movieDate :"",
             movieTitle : this.props.movieTitle,
             isFetching: true
@@ -18,10 +19,11 @@ export default class DateButton extends Component{
       }
       async componentDidMount(){
 
-        console.log(this.state.AllDates)
+       
     }
       handleClickDate(item){
-        Object.assign(this.state, {movieDate : item.date + "T" + item.time})
+        var btnTitle = item.date + " " + item.time
+        Object.assign(this.state, {movieDate : item.date + "T" + item.time, btnTitle })
         this.sendData()
       }
       sendData = () =>{
@@ -32,7 +34,7 @@ export default class DateButton extends Component{
       }
       generateDateBtn = () =>{
 
-          return <DropdownButton as={ButtonGroup} title={"Choose date"} id="bg-nested-dropdown">
+          return <DropdownButton as={ButtonGroup} title={this.state.btnTitle} id="bg-nested-dropdown">
           {this.state.AllDates && this.state.AllDates.map(
                   item => (
                       <Dropdown.Item onClick={() => this.handleClickDate(item)}>

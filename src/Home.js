@@ -52,6 +52,7 @@ export default class Home extends Component{
 
       async componentDidMount(){
           this.fetchMovies();
+          var vals = movieService.getAllMovies()
       }
       async fetchDates(){
         var title = this.state.movieToShow[0].title
